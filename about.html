@@ -3,27 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Title</title>
+  <title>About MtveriFM</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h2>MtveriFM</h2>
-  </header>
-  <main>
+  <header class = "site-header">
+    <a href="index.html" class="site-header__logo">MtveriFM</a>
 
-    <h1>hello there, this is my about page, information about the station and the DJ will go here.</h1>
+    <div class="site-header__live">
+      <span class="live-dot"></span>
+      <span class="live-label">Live</span>
+    </div>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+    <nav class="site-header__nav">
+      <a href="index.html" class="site-header__nav-link">Home</a>
+      <a href="about.html" class="site-header__nav-link">About</a>
+      <a href="contact.html" class="site-header__nav-link">Contact</a>
     </nav>
+    
+  </header>
 
+  <main class="main-content">
+    <h1>hello there, this is my about page, information about the station and the DJ will go here.</h1>
   </main>
   
-  <footer>
-    <p>© 2026 MtveriFM. All rights reserved.</p>
-  </footer>
+    <!-- floating widget thingy -->
+  <div class="float-player" id="float-player">
+      <button class="float-player__btn" id="float-player-btn">
+        <svg class="float-player__icon" id="float-player-icon"
+          width = "16" height = "16" viewBox = "0 0 24 24" fill = "currentColor">
+          <polygon points = "5 3 19 12 5 21 5 3"/>
+        </svg>
+      </button>
   
+    <div class="float-player__info">
+      <span class="float-player__track" id="float-player-track">Loading...</span>
+    </div>
+
+    <div class="float-player__vol">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      </svg>
+      <input class="float-player__slider" type="range" id="float-volume" min="0" max="100" value="60">
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer__logo">MtveriFM</div>
+    <nav class="site-footer__links">
+      <a href="#" class="site-footer__link">SoundCloud</a>
+      <a href="#" class="site-footer__link">Instagram</a>
+    </nav>
+    <p class="site-footer__copy">© 2026 MtveriFM. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>

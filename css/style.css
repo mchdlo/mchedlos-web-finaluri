@@ -1,35 +1,407 @@
 /* ===== custom properties ===== */
 :root {
   /* ფერების პალიტრა და დაშორებების ცვლადები */
+    --color-bg: #0a0a0a;
+  --color-surface: #141414;
+  --color-accent: #ff3c00;
+  --color-text: #ffffff;
+  --color-text-muted: #888888;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --radius: 12px;
+  --header-height: 64px;
 }
 
 /* ===== reset ===== */
 
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* ===== header ===== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background-color: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  padding: 0 var(--spacing-lg);
+  z-index: 100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.site-header__logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+}
+
+.site-header__live {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.live-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.8); }
+}
 
 /* ===== nav — Flexbox აქ გამოიყენე ===== */
 
-/* ===== login გვერდი ===== */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.site-header__nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.site-header__nav-link:hover {
+  color: var(--color-text);
+}
+
+/* ===== login გვერდი / amas arvaketeb ===== */
 
 /* ===== main ===== */
 
+.main-content {
+  padding-top: var(--header-height);
+  min-height: 100vh;
+}
+
 /* ===== form ===== */
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.contact-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.contact-form__label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.contact-form__input,
+.contact-form__select,
+.contact-form__textarea {
+  background-color: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.contact-form__input:focus,
+.contact-form__select:focus,
+.contact-form__textarea:focus {
+  border-color: var(--color-accent);
+}
+
+.contact-form__textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form__btn {
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: var(--radius);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+}
+
+.contact-form__btn:hover {
+  background-color: #ff5a1f;
+}
+
+.contact-form__feedback {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  min-height: 1.2em;
+}
 
 /* ===== results grid — CSS Grid აქ გამოიყენე ===== */
 
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
 /* ===== card ===== */
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  transition: border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--color-accent);
+}
+
+.card__title {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.card__subtitle {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
 
 /* ===== saved grid — CSS Grid აქ გამოიყენე ===== */
 
+.saved-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
 /* ===== ჩატვირთვის და შეცდომის მდგომარეობები ===== */
 
+.state-loading,
+.state-error {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--spacing-lg);
+}
+
+.state-error {
+  color: var(--color-accent);
+}
+
 /* ===== footer ===== */
+
+.site-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.site-footer__logo {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--color-text);
+}
+
+.site-footer__links {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.site-footer__link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.site-footer__link:hover {
+  color: var(--color-text);
+}
+
+.site-footer__copy {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+/* ===== float player ===== */
+
+.float-player {
+  position: fixed;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: 200;
+  background-color: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  min-width: 260px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.float-player.hidden {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+.float-player__btn {
+  background: var(--color-accent);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: var(--color-text);
+  transition: background 0.2s ease;
+}
+
+.float-player__btn:hover {
+  background: #ff5a1f;
+}
+
+.float-player__info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.float-player__track {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.float-player__vol {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.float-player__slider {
+  width: 60px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
 
 /* ===== რესპონსიული ===== */
 @media (max-width: 600px) {
   /* მობილური */
+  .site-header {
+    padding: 0 var(--spacing-md);
+  }
+
+  .site-header__live {
+    display: none;
+  }
+
+  .float-player {
+    min-width: unset;
+    right: var(--spacing-md);
+    bottom: var(--spacing-md);
+  }
+
+  .float-player__vol {
+    display: none;
+  }
+
+  .results-grid,
+  .saved-grid {
+    grid-template-columns: 1fr;
+    padding: var(--spacing-md);
+  }
 }
 
 @media (min-width: 1024px) {
   /* დესქტოპი */
+  .results-grid,
+  .saved-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
 }
