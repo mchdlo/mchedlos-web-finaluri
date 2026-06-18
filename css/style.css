@@ -32,7 +32,6 @@ body {
   min-height: 100vh;
 }
 
-
 a {
   text-decoration: none;
   color: inherit;
@@ -112,6 +111,23 @@ a {
 
 .site-header__nav-link:hover {
   color: var(--color-text);
+}
+
+.site-header__logo::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #333 30%, #1a1a1a 31%, #1a1a1a 45%, var(--color-accent) 46%, var(--color-accent) 54%, #1a1a1a 55%);
+  margin-right: 8px;
+  vertical-align: middle;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 /* ===== login გვერდი / amas arvaketeb ===== */
@@ -385,12 +401,28 @@ a {
   background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 60, 0, 0.1) 0%, transparent 70%);
 }
 
+/*ts flashes the bg*/
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.1; }
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 60, 0, 0.1) 0%, transparent 70%);
+  animation: glow-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
 .hero__bg-text {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: var(--font-display);
+  font-family: 'Edu NSW ACT Cursive', cursive;
   font-size: clamp(8rem, 22vw, 20rem);
   color: rgba(255, 255, 255, 0.03);
   white-space: nowrap;
@@ -827,6 +859,76 @@ a {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-text-muted);
+}
+
+/* ===== contact hero ===== */
+
+.contact-hero {
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 60, 0, 0.1) 0%, transparent 70%);
+}
+
+.contact-hero__inner {
+  max-width: 560px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg) 0;
+}
+
+.contact-hero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.contact-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+}
+
+.contact-hero__title--accent {
+  color: var(--color-accent);
+}
+
+.contact-hero__sub {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+
+/* ===== contact form section ===== */
+
+.contact-form-section {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-lg);
+}
+
+.contact-form__error {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  min-height: 1em;
+}
+
+.contact-form__checkbox {
+  accent-color: var(--color-accent);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  margin-right: 6px;
+  vertical-align: middle;
 }
 
 /* ===== რესპონსიული ===== */

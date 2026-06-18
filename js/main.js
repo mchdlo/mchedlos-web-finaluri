@@ -1,37 +1,81 @@
-import { fetchData, getSaved, setSaved } from './api.js';
+import { fetchStationInfo, fetchCurrentSong, fetchLastSongs, fetchListeners } from './api.js';
+import { initPlayer } from './player.js';
 
-// თუ მომხმარებელი არ არის ავტორიზებული — გადამისამართება login.html-ზე
-if (!localStorage.getItem('user')) {
-  window.location.href = 'login.html';
+const POLL_INTERVAL = 30000;
+
+function updateCurrentSong(song) {
+  document.getElementById('track-title').textContent = song.title;
+  document.getElementById('track-artist').textContent = song.artist;
+  document.getElementById('np-track').textContent = `${song.artist} — ${song.title}`;
+  document.getElementById('float-player-track').textContent = `${song.artist} — ${song.title}`;
 }
 
-document.getElementById('nav-user').textContent = localStorage.getItem('user') || '';
+function updateHistory(songs) {
+  const list = document.getElementById('history-list');
+  list.innerHTML = '';
+  songs.forEach(song => {
+    const item = document.createElement('div');
+    item.className = 'history-item';
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-  localStorage.removeItem('user');
-  document.cookie = 'authorized=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-  window.location.href = 'login.html';
-});
+    const title = document.createElement('span');
+    title.className = 'history-item__title';
+    title.textContent = `${song.artist} — ${song.title}`;
 
-// --- სტეიტი ---
-// შეინახე მდგომარეობა ობიექტების მასივში
-let savedItems = getSaved();
+    const time = document.createElement('span');
+    time.className = 'history-item__time';
+    time.textContent = song.started;
 
-function showLoading() {}
-
-function showError(message) {}
-
-function renderResults(items) {
-  // თითოეული item-ისთვის შექმენი ბარათის ელემენტი
-  // forEach-ის შიგნით handler ხურავს item-ზე — ეს შენი closure-ია
-  items.forEach(item => {
-    const card = document.createElement('article');
-    // ბარათის შიგთავსი აქ
-    document.getElementById('results-grid').appendChild(card);
+    item.appendChild(title);
+    item.appendChild(time);
+    list.appendChild(item);
   });
 }
 
-document.getElementById('search-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  // ვალიდაცია, showLoading/showError გამოძახება, fetchData, renderResults
-});
+function updateListeners(count) {
+  document.getElementById('listener-count').textContent = count;
+}
+
+function showError() {
+  document.getElementById('error-msg').removeAttribute('hidden');
+}
+
+async function refresh() {
+  try {
+    const info = await fetchStationInfo();
+    updateCurrentSong(fetchCurrentSong(info));
+    updateListeners(fetchListeners(info));
+  } catch (err) {
+    showError();
+  }
+}
+
+async function init() {
+  try {
+    const info = await fetchStationInfo();
+    updateCurrentSong(fetchCurrentSong(info));
+    updateHistory(fetchLastSongs(info));
+    updateListeners(fetchListeners(info));
+  } catch (err) {
+    showError();
+  }
+
+  initPlayer();
+  setInterval(refresh, POLL_INTERVAL);
+
+  document.getElementById('share-btn').addEventListener('click', async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      await navigator.share({ title: 'MtveriFM', url });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  });
+
+  document.getElementById('restart-btn').addEventListener('click', () => {
+    const audio = document.querySelector('audio');
+    audio.src = audio.src;
+    audio.play();
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
