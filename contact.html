@@ -6,6 +6,9 @@
   <title>Contact MtveriFM</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class = "site-header">
@@ -24,11 +27,63 @@
     
   </header>
 
-  <main class="main-content">
+<main class="main-content">
 
-    <h1>hello there, this is my contact page, music requests and feedback will go here.</h1>
+  <section class="contact-hero">
+    <div class="contact-hero__inner">
+      <h1 class="contact-hero__title">Contact me!</h1>
+      <span class="contact-hero__eyebrow">Request a mix, give feedback, or just say hello :)</span>
+    </div>
+  </section>
 
-  </main>
+  <section class="contact-form-section">
+    <form class="contact-form" id="contact-form" novalidate>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="name">Name</label>
+        <input class="contact-form__input" type="text" id="name" name="name" placeholder="Your name" autocomplete="off">
+        <span class="contact-form__error" id="name-error"></span>
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="email">Email</label>
+        <input class="contact-form__input" type="email" id="email" name="email" placeholder="your@email.com" autocomplete="off">
+        <span class="contact-form__error" id="email-error"></span>
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="type">Request Type</label>
+        <select class="contact-form__select" id="type" name="type">
+          <option value="">Select a type</option>
+          <option value="track-request">Track Request</option>
+          <option value="feedback">Feedback</option>
+          <option value="booking">Booking</option>
+          <option value="other">Other</option>
+        </select>
+        <span class="contact-form__error" id="type-error"></span>
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label" for="message">Message</label>
+        <textarea class="contact-form__textarea" id="message" name="message" placeholder="What's on your mind..."></textarea>
+        <span class="contact-form__error" id="message-error"></span>
+      </div>
+
+      <div class="contact-form__group">
+        <label class="contact-form__label">
+          <input class="contact-form__checkbox" type="checkbox" id="subscribe" name="subscribe">
+          Notify me when my track gets played
+        </label>
+      </div>
+
+      <button class="contact-form__btn" type="submit">Send Message</button>
+
+      <p class="contact-form__feedback" id="form-feedback" aria-live="polite"></p>
+
+    </form>
+  </section>
+
+</main>
 
   <!-- floating widget thingy -->
   <div class="float-player" id="float-player">
@@ -56,10 +111,11 @@
 
   <footer class="site-footer">
     <div class="site-footer__logo">MtveriFM</div>
-    <nav class="site-footer__links">
-      <a href="#" class="site-footer__link">SoundCloud</a>
-      <a href="#" class="site-footer__link">Instagram</a>
-    </nav>
+      <nav class="site-footer__links">
+        <a href="https://www.instagram.com/mtverifm" class="site-footer__link" target="_blank">Instagram</a>
+        <a href="https://soundcloud.com/mtverifm" class="site-footer__link" target="_blank">SoundCloud</a>
+        <a href="https://www.youtube.com/@mtverifm" class="site-footer__link" target="_blank">YouTube</a>
+      </nav>
     <p class="site-footer__copy">© 2026 MtveriFM. All rights reserved.</p>
   </footer>
 
