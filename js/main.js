@@ -1,7 +1,5 @@
-// js/main.js
-
-import { fetchStationInfo, fetchCurrentSong, fetchLastSongs, fetchListeners } from './api.js';
-import { initPlayer, getAudioElement } from './player.js';
+import { fetchStationInfo, fetchCurrentSong, fetchLastSongs, fetchListeners, fetchLiveStatus } from './api.js';
+import { initPlayer } from './player.js';
 import { initReactions, updateCurrentTrack } from './reactions.js';
 
 const POLL_INTERVAL = 30000;
@@ -50,12 +48,12 @@ function updateListeners(count) {
 
 function showLoading() {
   const loading = document.getElementById('loading-msg');
-  if (loading) loading.removeAttribute('hidden');
+  if (loading) loading.classList.remove('state-loading--hidden');
 }
 
 function hideLoading() {
   const loading = document.getElementById('loading-msg');
-  if (loading) loading.setAttribute('hidden', '');
+  if (loading) loading.classList.add('state-loading--hidden');
 }
 
 function showError() {
@@ -66,26 +64,56 @@ function hideError() {
   document.getElementById('error-msg').setAttribute('hidden', '');
 }
 
+function updateLiveIndicator(isLive) {
+  const dot = document.querySelector('#live-indicator .live-dot');
+  const label = document.getElementById('live-label');
+  if (!dot || !label) return;
+
+  dot.classList.remove('live-dot--offline', 'live-dot--autodj');
+
+  if (isLive) {
+    label.textContent = 'Live';
+  } else {
+    dot.classList.add('live-dot--autodj');
+    label.textContent = 'AutoDJ';
+  }
+}
+
+function setOffline() {
+  const dot = document.querySelector('#live-indicator .live-dot');
+  const label = document.getElementById('live-label');
+  if (!dot || !label) return;
+
+  dot.classList.remove('live-dot--autodj');
+  dot.classList.add('live-dot--offline');
+  label.textContent = 'Offline';
+}
+
 async function refresh() {
   try {
     const info = await fetchStationInfo();
     updateCurrentSong(fetchCurrentSong(info));
     updateListeners(fetchListeners(info));
+    updateLiveIndicator(fetchLiveStatus(info));
     hideError();
   } catch (err) {
     showError();
+    setOffline();
   }
 }
 
 async function init() {
   showLoading();
+  const minDelay = new Promise(resolve => setTimeout(resolve, 600));
+
   try {
-    const info = await fetchStationInfo();
+    const [info] = await Promise.all([fetchStationInfo(), minDelay]);
     updateCurrentSong(fetchCurrentSong(info));
     updateHistory(fetchLastSongs(info));
     updateListeners(fetchListeners(info));
     hideError();
   } catch (err) {
+    await minDelay;
     showError();
   } finally {
     hideLoading();
@@ -102,12 +130,6 @@ async function init() {
     } else {
       await navigator.clipboard.writeText(url);
     }
-  });
-
-  document.getElementById('restart-btn').addEventListener('click', () => {
-    const audio = getAudioElement();
-    audio.src = audio.src;
-    audio.play();
   });
 }
 

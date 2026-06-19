@@ -14,9 +14,9 @@
   <header class = "site-header">
     <a href="index.html" class="site-header__logo">MtveriFM</a>
 
-    <div class="site-header__live">
+    <div class="site-header__live" id="live-indicator">
       <span class="live-dot"></span>
-      <span class="live-label">Live</span>
+      <span class="live-label" id="live-label">Live</span>
     </div>
 
     <nav class="site-header__nav">
@@ -44,6 +44,7 @@
           </div>
 
           <div class="player-card__body">
+            <p class="state-loading state-loading--hidden" id="loading-msg">Loading Track...</p>
 
             <p class="player-card__error" id="error-msg" hidden>
               Could not connect to the stream. Try again later.
@@ -87,7 +88,7 @@
                 <strong id="listener-count">—</strong>&nbsp;listeners
               </div>
               <div class="player-card__stat-pill">
-                radioboss.fm
+                <a href="https://c30.radioboss.fm/u/1137" target="_blank" class="player-card__stat-link">RadioBOSS.fm</a>
               </div>
             </div>
 
