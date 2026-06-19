@@ -2,6 +2,7 @@
 
 import { fetchStationInfo, fetchCurrentSong, fetchLastSongs, fetchListeners } from './api.js';
 import { initPlayer, getAudioElement } from './player.js';
+import { initReactions, updateCurrentTrack } from './reactions.js';
 
 const POLL_INTERVAL = 30000;
 
@@ -10,6 +11,7 @@ function updateCurrentSong(song) {
   document.getElementById('track-artist').textContent = song.artist;
   document.getElementById('np-track').textContent = `${song.artist} — ${song.title}`;
   document.getElementById('float-player-track').textContent = `${song.artist} — ${song.title}`;
+  updateCurrentTrack(song);
 }
 
 function updateHistory(songs) {
@@ -90,6 +92,7 @@ async function init() {
   }
 
   initPlayer();
+  initReactions();
   setInterval(refresh, POLL_INTERVAL);
 
   document.getElementById('share-btn').addEventListener('click', async () => {

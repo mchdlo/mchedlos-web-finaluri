@@ -45,6 +45,10 @@
 
           <div class="player-card__body">
 
+            <p class="player-card__error" id="error-msg" hidden>
+              Could not connect to the stream. Try again later.
+            </p>
+
             <div class="player-card__track-info">
               <div class="player-card__track-title" id="track-title">Loading Track...</div>
               <div class="player-card__track-artist" id="track-artist">...</div>
@@ -59,46 +63,25 @@
               <span class="waveform__bar"></span>
             </div>
 
-            <!-- controlling the player -->
-             <!-- restart -->
+            <!-- play button alone -->
             <div class="player-card__controls">
-              <button class="player-card__ctrl-btn" id="restart-btn" title="Restart Track">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="1 4 1 10 7 10"/>
-                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-                </svg>
-              </button>
-
-              <!-- play -->
               <button class="player-card__play-btn" id="play-btn" title="Play / Pause">
                 <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <polygon points="5 3 19 12 5 21 5 3"/>
                 </svg>
               </button>
-
-              <!-- share -->
-              <button class="player-card__ctrl-btn" id="share-btn" title="Share">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="18" cy="5" r="3"/>
-                  <circle cx="6" cy="12" r="3"/>
-                  <circle cx="18" cy="19" r="3"/>
-                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                </svg>
-              </button>
             </div>
 
             <!-- volume -->
-             <div class="player-card__volume">
+            <div class="player-card__volume">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
               </svg>
-
               <input class="player-card__volume-slider" type="range" id="volume" min="0" max="100" value="60">
               <span class="player-card__volume-val" id="vol-display">60%</span>
-             </div>
+            </div>
 
-             <!-- stats -->
+            <!-- stats -->
             <div class="player-card__stats">
               <div class="player-card__stat-pill">
                 <strong id="listener-count">—</strong>&nbsp;listeners
@@ -108,16 +91,43 @@
               </div>
             </div>
 
-            <!-- loading thingy -->
-            <p class="state-loading" id="loading-msg">
-              Loading…
-            </p>
+            <!-- bottom row: reconnect (left) + reactions/share (right) -->
+            <div class="player-card__bottom-row">
+              <button class="player-card__reconnect" id="restart-btn" title="Reconnect to stream">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="1 4 1 10 7 10"/>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+                <span>Reconnect</span>
+              </button>
 
-            <!-- error -->
-            <p class="player-card__error" id="error-msg" hidden>
-              Could not connect to the stream. Try again later.
-            </p>
-          </div>
+              <div class="player-card__reactions">
+                <button class="player-card__reaction-btn" id="like-btn" title="Like">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
+                  </svg>
+                  <span id="like-count">0</span>
+                </button>
+
+                <button class="player-card__reaction-btn" id="dislike-btn" title="Dislike">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zM17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/>
+                  </svg>
+                </button>
+
+                <span class="player-card__reaction-divider"></span>
+
+                <button class="player-card__reaction-btn" id="share-btn" title="Share">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"/>
+                    <circle cx="6" cy="12" r="3"/>
+                    <circle cx="18" cy="19" r="3"/>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
 
           <!-- track history -->
           <div class="player-card__history">

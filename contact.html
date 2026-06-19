@@ -41,19 +41,19 @@
       <input type ="hidden" name = "form-name" value = "contact"/>
       <div class="contact-form__group">
         <label class="contact-form__label" for="name">Name</label>
-        <input class="contact-form__input" type="text" id="name" name="name" placeholder="Your name" autocomplete="off">
+        <input class="contact-form__input" type="text" id="name" name="name" placeholder="Your name" autocomplete="off" required>
         <span class="contact-form__error" id="name-error"></span>
       </div>
 
       <div class="contact-form__group">
         <label class="contact-form__label" for="email">Email</label>
-        <input class="contact-form__input" type="email" id="email" name="email" placeholder="your@email.com" autocomplete="off">
+        <input class="contact-form__input" type="email" id="email" name="email" placeholder="your@email.com" autocomplete="off" required>
         <span class="contact-form__error" id="email-error"></span>
       </div>
 
       <div class="contact-form__group">
         <label class="contact-form__label" for="type">Request Type</label>
-        <select class="contact-form__select" id="type" name="type">
+        <select class="contact-form__select" id="type" name="type" required>
           <option value="">Select a type</option>
           <option value="track-request">Track Request</option>
           <option value="feedback">Feedback</option>
