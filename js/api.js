@@ -30,4 +30,8 @@ export function fetchListeners(info) {
   return info.listeners;
 }
 
+export function fetchLiveStatus(info) {
+  return info.live;
+}
+
 export { fetchStationInfo };

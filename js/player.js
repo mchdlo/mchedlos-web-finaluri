@@ -1,5 +1,3 @@
-// ts playing i hope :Sob:
-
 const STREAM_URL = 'https://c30.radioboss.fm:9137/stream';
 const VOLUME_KEY = 'mtverifm_volume';
 
@@ -48,21 +46,39 @@ function showError() {
   if (errorMsg) errorMsg.removeAttribute('hidden');
 }
 
+// UI state is driven by actual audio events, not assumptions about what
+// an async action did. This avoids icon/waveform desync when reconnect
+// or play/pause race against each other.
+function syncPlayingUI() {
+  setPlayIcon('play-icon', true);
+  setPlayIcon('float-player-icon', true);
+  startWaveform();
+}
+
+function syncPausedUI() {
+  setPlayIcon('play-icon', false);
+  setPlayIcon('float-player-icon', false);
+  stopWaveform();
+}
+
 async function togglePlay() {
   if (audio.paused) {
     try {
       await audio.play();
-      setPlayIcon('play-icon', true);
-      setPlayIcon('float-player-icon', true);
-      startWaveform();
     } catch (err) {
       showError();
     }
   } else {
     audio.pause();
-    setPlayIcon('play-icon', false);
-    setPlayIcon('float-player-icon', false);
-    stopWaveform();
+  }
+}
+
+async function reconnect() {
+  audio.src = STREAM_URL;
+  try {
+    await audio.play();
+  } catch (err) {
+    showError();
   }
 }
 
@@ -98,7 +114,10 @@ function setupFloatPlayerVisibility() {
 export function initPlayer() {
   document.getElementById('play-btn')?.addEventListener('click', togglePlay);
   document.getElementById('float-player-btn')?.addEventListener('click', togglePlay);
+  document.getElementById('restart-btn')?.addEventListener('click', reconnect);
 
+  audio.addEventListener('play', syncPlayingUI);
+  audio.addEventListener('pause', syncPausedUI);
   audio.addEventListener('error', showError);
 
   setupVolumeControls();

@@ -14,9 +14,9 @@
   <header class = "site-header">
     <a href="index.html" class="site-header__logo">MtveriFM</a>
 
-    <div class="site-header__live">
+    <div class="site-header__live" id="live-indicator">
       <span class="live-dot"></span>
-      <span class="live-label">Live</span>
+      <span class="live-label" id="live-label">Live</span>
     </div>
 
     <nav class="site-header__nav">
@@ -33,7 +33,12 @@
       <div class="about-hero__inner">
         <span class="about-hero__eyebrow">The Station</span>
         <h1 class="about-hero__title">Mtveri<span class="about-hero__title--accent">FM</span> Radio</h1>
-        <p class="about-hero__bio">lore ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p class="about-hero__bio">
+          Erekle - Founder and host of MtveriFM Radio <br>
+          His passion for vinyl and analogue sound started back in the 1990s <br>
+          Today, he steps behind the decks to share that evolution through Tbilisi-based Electronic Music Radio, MtveriFM <br>
+          <span class="about-hero__title--accent">Live Broadcasts, DJ Sessions, and curated mixes </span> are all part of the MtveriFM experience. <br>
+        </p>
       </div>
     </section>
 
@@ -52,38 +57,38 @@
       </div>
     </section>
 
-
     <!-- Schedule -->
     <section class="schedule">
       <div class="schedule__inner">
         <h2 class="section-label">On Air</h2>
         <div class="schedule__grid">
           <div class="schedule__row">
-            <span class="schedule__day">Monday</span>
-            <span class="schedule__show">testing</span>
-            <span class="schedule__time">23:00 - 02:00</span>
+            <span class="schedule__day">Tuesday (Monthly)</span>
+            <span class="schedule__show">Radio Show</span>
+            <span class="schedule__time">8:00 PM (GET)</span>
           </div>
 
           <div class="schedule__row">
-            <span class="schedule__day">Wednesday</span>
-            <span class="schedule__show">testing</span>
-            <span class="schedule__time">22:00 - 00:00</span>
+            <span class="schedule__day">Thursday</span>
+            <span class="schedule__show">Vinyl Sessions</span>
+            <span class="schedule__time">2:00 PM (GET)</span>
           </div>
 
           <div class="schedule__row">
-            <span class="schedule__day">Friday</span>
-            <span class="schedule__show">testing</span>
-            <span class="schedule__time">00:00 - 04:00</span>
+            <span class="schedule__day">Thursday</span>
+            <span class="schedule__show">Guest Mix</span>
+            <span class="schedule__time">8:00 PM (GET)</span>
           </div>
 
           <div class="schedule__row">
-            <span class="schedule__day">Saturday</span>
-            <span class="schedule__show">MtveriFM Live</span>
-            <span class="schedule__time">21:00 - 03:00</span>
+            <span class="schedule__day">Sunday</span>
+            <span class="schedule__show">Spotify Weekly</span>
+            <span class="schedule__time">12:00 PM (GET)</span>
           </div>
         </div>
       </div>
     </section>
+    
 
   </main>
   
@@ -117,6 +122,6 @@
       </nav>
     <p class="site-footer__copy">© 2026 MtveriFM. All rights reserved.</p>
   </footer>
-
+  <script type="module" src="js/float-init.js"></script>
 </body>
 </html>
