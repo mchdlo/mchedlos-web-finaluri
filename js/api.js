@@ -1,6 +1,6 @@
 //hmmm
-const STATION_ID = 'YOUR_STATION_ID'; // get from RadioBOSS control panel
-const API_KEY = 'YOUR_API_KEY';       // get from Settings/Account
+const STATION_ID = '1137'; // get from RadioBOSS control panel
+const API_KEY = 'B2JVZU5B6ALN';       // get from Settings/Account
 const API_BASE = `https://c30.radioboss.fm/api/info/${STATION_ID}?key=${API_KEY}`;
 
 async function fetchStationInfo() {

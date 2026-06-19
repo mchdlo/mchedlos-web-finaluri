@@ -1,5 +1,7 @@
+// js/main.js
+
 import { fetchStationInfo, fetchCurrentSong, fetchLastSongs, fetchListeners } from './api.js';
-import { initPlayer } from './player.js';
+import { initPlayer, getAudioElement } from './player.js';
 
 const POLL_INTERVAL = 30000;
 
@@ -13,6 +15,7 @@ function updateCurrentSong(song) {
 function updateHistory(songs) {
   const list = document.getElementById('history-list');
   list.innerHTML = '';
+
   songs.forEach(song => {
     const item = document.createElement('div');
     item.className = 'history-item';
@@ -27,6 +30,14 @@ function updateHistory(songs) {
 
     item.appendChild(title);
     item.appendChild(time);
+
+    // closure: each handler remembers which song belongs to this item
+    item.addEventListener('click', () => {
+      navigator.clipboard.writeText(`${song.artist} — ${song.title}`);
+      item.classList.add('history-item--copied');
+      setTimeout(() => item.classList.remove('history-item--copied'), 1000);
+    });
+
     list.appendChild(item);
   });
 }
@@ -35,8 +46,22 @@ function updateListeners(count) {
   document.getElementById('listener-count').textContent = count;
 }
 
+function showLoading() {
+  const loading = document.getElementById('loading-msg');
+  if (loading) loading.removeAttribute('hidden');
+}
+
+function hideLoading() {
+  const loading = document.getElementById('loading-msg');
+  if (loading) loading.setAttribute('hidden', '');
+}
+
 function showError() {
   document.getElementById('error-msg').removeAttribute('hidden');
+}
+
+function hideError() {
+  document.getElementById('error-msg').setAttribute('hidden', '');
 }
 
 async function refresh() {
@@ -44,19 +69,24 @@ async function refresh() {
     const info = await fetchStationInfo();
     updateCurrentSong(fetchCurrentSong(info));
     updateListeners(fetchListeners(info));
+    hideError();
   } catch (err) {
     showError();
   }
 }
 
 async function init() {
+  showLoading();
   try {
     const info = await fetchStationInfo();
     updateCurrentSong(fetchCurrentSong(info));
     updateHistory(fetchLastSongs(info));
     updateListeners(fetchListeners(info));
+    hideError();
   } catch (err) {
     showError();
+  } finally {
+    hideLoading();
   }
 
   initPlayer();
@@ -72,7 +102,7 @@ async function init() {
   });
 
   document.getElementById('restart-btn').addEventListener('click', () => {
-    const audio = document.querySelector('audio');
+    const audio = getAudioElement();
     audio.src = audio.src;
     audio.play();
   });

@@ -706,6 +706,11 @@ a {
   flex-shrink: 0;
 }
 
+.history-item--copied {
+  background-color: var(--color-accent);
+  transition: background-color 0.2s ease;
+}
+
 /* ===== aboutis hero ===== */
 
 .about-hero {
