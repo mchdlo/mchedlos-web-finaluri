@@ -37,8 +37,8 @@
   </section>
 
   <section class="contact-form-section">
-    <form class="contact-form" id="contact-form" novalidate>
-
+    <form class="contact-form" id="contact-form" netlify novalidate>
+      <input type ="hidden" name = "form-name" value = "contact"/>
       <div class="contact-form__group">
         <label class="contact-form__label" for="name">Name</label>
         <input class="contact-form__input" type="text" id="name" name="name" placeholder="Your name" autocomplete="off">
@@ -118,6 +118,6 @@
       </nav>
     <p class="site-footer__copy">© 2026 MtveriFM. All rights reserved.</p>
   </footer>
-
+  <script type="module" src="js/form.js"></script>
 </body>
 </html>
