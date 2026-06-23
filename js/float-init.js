@@ -1,15 +1,15 @@
-import { fetchStationInfo, fetchCurrentSong } from './api.js';
+import { fetchCurrentSong } from './api.js';
 import { initPlayer } from './player.js';
 
 async function loadTrackName() {
+  const trackEl = document.getElementById('float-player-track');
+  if (!trackEl) return;
+
   try {
-    const info = await fetchStationInfo();
-    const song = fetchCurrentSong(info);
-    const trackEl = document.getElementById('float-player-track');
-    if (trackEl) trackEl.textContent = `${song.artist} — ${song.title}`;
+    const song = await fetchCurrentSong();
+    trackEl.textContent = `${song.artist} — ${song.title}`;
   } catch (err) {
-    const trackEl = document.getElementById('float-player-track');
-    if (trackEl) trackEl.textContent = 'Unable to load track';
+    trackEl.textContent = 'Unable to load track';
   }
 }
 

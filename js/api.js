@@ -1,37 +1,44 @@
-//hmmm
-const STATION_ID = '1137'; // get from RadioBOSS control panel
-const API_KEY = 'B2JVZU5B6ALN';       // get from Settings/Account
-const API_BASE = `https://c30.radioboss.fm/api/info/${STATION_ID}?key=${API_KEY}`;
+const STATION_NAME = 'mtverifmradio';
+const API_BASE = `https://api.laut.fm/station/${STATION_NAME}`;
 
-async function fetchStationInfo() {
-  const res = await fetch(API_BASE);
+async function fetchJSON(url) {
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`API error: ${res.status}`);
   return res.json();
 }
 
-export function fetchCurrentSong(info) {
-  const attr = info.currenttrack_info['@attributes'];
+export async function fetchCurrentSong() {
+  const data = await fetchJSON(`${API_BASE}/current_song`);
   return {
-    title: attr.TITLE,
-    artist: attr.ARTIST,
-    duration: attr.DURATION,
+    title: data.title ?? 'Unknown Track',
+    artist: data.artist?.name ?? 'Unknown Artist',
   };
 }
 
-export function fetchLastSongs(info) {
-  return info.recent.map(track => ({
-    title: track.tracktitle,
-    artist: track.trackartist,
-    started: track.started,
+export async function fetchLastSongs() {
+  const data = await fetchJSON(`${API_BASE}/last_songs`);
+  return data.map(track => ({
+    title: track.title ?? 'Unknown Track',
+    artist: track.artist?.name ?? 'Unknown Artist',
+    started: formatTime(track.started_at),
   }));
 }
 
-export function fetchListeners(info) {
-  return info.listeners;
+export async function fetchListeners() {
+  const data = await fetchJSON(API_BASE);
+  return data.listeners ?? 0;
 }
 
-export function fetchLiveStatus(info) {
-  return info.live;
+export async function fetchLiveStatus() {
+  const data = await fetchJSON(API_BASE);
+  // If null/absent = AutoDJ is playing.
+  return data.current_event != null;
 }
 
-export { fetchStationInfo };
+function formatTime(value) {
+  if (!value) return '';
+  // laut.fm abrunebs ISO strings; tu parsing daafaila, prosta raw value brundeba
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return String(value);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}

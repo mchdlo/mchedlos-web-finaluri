@@ -1,4 +1,4 @@
-const STREAM_URL = 'https://c30.radioboss.fm:9137/stream';
+const STREAM_URL = 'https://stream.laut.fm/mtverifmradio';
 const VOLUME_KEY = 'mtverifm_volume';
 
 const PLAY_ICON = '<polygon points="5 3 19 12 5 21 5 3"/>';

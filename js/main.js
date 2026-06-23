@@ -1,4 +1,4 @@
-import { fetchStationInfo, fetchCurrentSong, fetchLastSongs, fetchListeners, fetchLiveStatus } from './api.js';
+import { fetchCurrentSong, fetchLastSongs, fetchListeners, fetchLiveStatus } from './api.js';
 import { initPlayer } from './player.js';
 import { initReactions, updateCurrentTrack } from './reactions.js';
 
@@ -31,7 +31,6 @@ function updateHistory(songs) {
     item.appendChild(title);
     item.appendChild(time);
 
-    // closure: each handler remembers which song belongs to this item
     item.addEventListener('click', () => {
       navigator.clipboard.writeText(`${song.artist} — ${song.title}`);
       item.classList.add('history-item--copied');
@@ -47,13 +46,11 @@ function updateListeners(count) {
 }
 
 function showLoading() {
-  const loading = document.getElementById('loading-msg');
-  if (loading) loading.classList.remove('state-loading--hidden');
+  document.getElementById('loading-msg')?.classList.remove('state-loading--hidden');
 }
 
 function hideLoading() {
-  const loading = document.getElementById('loading-msg');
-  if (loading) loading.classList.add('state-loading--hidden');
+  document.getElementById('loading-msg')?.classList.add('state-loading--hidden');
 }
 
 function showError() {
@@ -90,15 +87,23 @@ function setOffline() {
 }
 
 async function refresh() {
-  try {
-    const info = await fetchStationInfo();
-    updateCurrentSong(fetchCurrentSong(info));
-    updateListeners(fetchListeners(info));
-    updateLiveIndicator(fetchLiveStatus(info));
-    hideError();
-  } catch (err) {
+  // allSettled so one failed endpoint doesn't wipe the whole UI
+  const [songRes, listenersRes, liveRes] = await Promise.allSettled([
+    fetchCurrentSong(),
+    fetchListeners(),
+    fetchLiveStatus(),
+  ]);
+
+  if (songRes.status === 'fulfilled') updateCurrentSong(songRes.value);
+  if (listenersRes.status === 'fulfilled') updateListeners(listenersRes.value);
+  if (liveRes.status === 'fulfilled') updateLiveIndicator(liveRes.value);
+
+  const allFailed = [songRes, listenersRes, liveRes].every(r => r.status === 'rejected');
+  if (allFailed) {
     showError();
     setOffline();
+  } else {
+    hideError();
   }
 }
 
@@ -106,18 +111,28 @@ async function init() {
   showLoading();
   const minDelay = new Promise(resolve => setTimeout(resolve, 600));
 
-  try {
-    const [info] = await Promise.all([fetchStationInfo(), minDelay]);
-    updateCurrentSong(fetchCurrentSong(info));
-    updateHistory(fetchLastSongs(info));
-    updateListeners(fetchListeners(info));
-    hideError();
-  } catch (err) {
-    await minDelay;
+  const [songRes, historyRes, listenersRes, liveRes] = await Promise.allSettled([
+    fetchCurrentSong(),
+    fetchLastSongs(),
+    fetchListeners(),
+    fetchLiveStatus(),
+  ]);
+  await minDelay;
+
+  if (songRes.status === 'fulfilled') updateCurrentSong(songRes.value);
+  if (historyRes.status === 'fulfilled') updateHistory(historyRes.value);
+  if (listenersRes.status === 'fulfilled') updateListeners(listenersRes.value);
+  if (liveRes.status === 'fulfilled') updateLiveIndicator(liveRes.value);
+
+  const allFailed = [songRes, historyRes, listenersRes, liveRes].every(r => r.status === 'rejected');
+  if (allFailed) {
     showError();
-  } finally {
-    hideLoading();
+    setOffline();
+  } else {
+    hideError();
   }
+
+  hideLoading();
 
   initPlayer();
   initReactions();
