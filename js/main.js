@@ -61,33 +61,29 @@ function hideError() {
   document.getElementById('error-msg').setAttribute('hidden', '');
 }
 
-function updateLiveIndicator(isLive) {
+// Two-state live indicator. Updates:
+//   - the label text (Live / Offline)
+//   - the dot's modifier class
+//   - a body class so any CSS (vinyl glow, etc.) can react globally
+function setLiveState(isLive) {
   const dot = document.querySelector('#live-indicator .live-dot');
   const label = document.getElementById('live-label');
+
+  document.body.classList.toggle('is-live', isLive);
+  document.body.classList.toggle('is-offline', !isLive);
+
   if (!dot || !label) return;
 
-  dot.classList.remove('live-dot--offline', 'live-dot--autodj');
-
   if (isLive) {
+    dot.classList.remove('live-dot--offline');
     label.textContent = 'Live';
   } else {
-    dot.classList.add('live-dot--autodj');
-    label.textContent = 'AutoDJ';
+    dot.classList.add('live-dot--offline');
+    label.textContent = 'Offline';
   }
 }
 
-function setOffline() {
-  const dot = document.querySelector('#live-indicator .live-dot');
-  const label = document.getElementById('live-label');
-  if (!dot || !label) return;
-
-  dot.classList.remove('live-dot--autodj');
-  dot.classList.add('live-dot--offline');
-  label.textContent = 'Offline';
-}
-
 async function refresh() {
-  // allSettled so one failed endpoint doesn't wipe the whole UI
   const [songRes, listenersRes, liveRes] = await Promise.allSettled([
     fetchCurrentSong(),
     fetchListeners(),
@@ -96,15 +92,11 @@ async function refresh() {
 
   if (songRes.status === 'fulfilled') updateCurrentSong(songRes.value);
   if (listenersRes.status === 'fulfilled') updateListeners(listenersRes.value);
-  if (liveRes.status === 'fulfilled') updateLiveIndicator(liveRes.value);
+  setLiveState(liveRes.status === 'fulfilled' && liveRes.value === true);
 
   const allFailed = [songRes, listenersRes, liveRes].every(r => r.status === 'rejected');
-  if (allFailed) {
-    showError();
-    setOffline();
-  } else {
-    hideError();
-  }
+  if (allFailed) showError();
+  else hideError();
 }
 
 async function init() {
@@ -122,15 +114,11 @@ async function init() {
   if (songRes.status === 'fulfilled') updateCurrentSong(songRes.value);
   if (historyRes.status === 'fulfilled') updateHistory(historyRes.value);
   if (listenersRes.status === 'fulfilled') updateListeners(listenersRes.value);
-  if (liveRes.status === 'fulfilled') updateLiveIndicator(liveRes.value);
+  setLiveState(liveRes.status === 'fulfilled' && liveRes.value === true);
 
   const allFailed = [songRes, historyRes, listenersRes, liveRes].every(r => r.status === 'rejected');
-  if (allFailed) {
-    showError();
-    setOffline();
-  } else {
-    hideError();
-  }
+  if (allFailed) showError();
+  else hideError();
 
   hideLoading();
 

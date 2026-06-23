@@ -25,19 +25,17 @@ export async function fetchLastSongs() {
 }
 
 export async function fetchListeners() {
-  const data = await fetchJSON(API_BASE);
-  return data.listeners ?? 0;
+  const data = await fetchJSON(`${API_BASE}/listeners`);
+  return typeof data === 'number' ? data : 0;
 }
 
 export async function fetchLiveStatus() {
   const data = await fetchJSON(API_BASE);
-  // If null/absent = AutoDJ is playing.
-  return data.current_event != null;
+  return data.current_playlist != null;
 }
 
 function formatTime(value) {
   if (!value) return '';
-  // laut.fm abrunebs ISO strings; tu parsing daafaila, prosta raw value brundeba
   const date = new Date(value);
   if (isNaN(date.getTime())) return String(value);
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

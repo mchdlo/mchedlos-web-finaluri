@@ -1,4 +1,4 @@
-const STREAM_URL = 'https://stream.laut.fm/mtverifmradio';
+const STREAM_URL = 'https://mtverifmradio.stream.laut.fm/mtverifmradio';
 const VOLUME_KEY = 'mtverifm_volume';
 
 const PLAY_ICON = '<polygon points="5 3 19 12 5 21 5 3"/>';
@@ -46,9 +46,6 @@ function showError() {
   if (errorMsg) errorMsg.removeAttribute('hidden');
 }
 
-// UI state is driven by actual audio events, not assumptions about what
-// an async action did. This avoids icon/waveform desync when reconnect
-// or play/pause race against each other.
 function syncPlayingUI() {
   setPlayIcon('play-icon', true);
   setPlayIcon('float-player-icon', true);
@@ -122,7 +119,7 @@ export function initPlayer() {
 
   setupVolumeControls();
   setupFloatPlayerVisibility();
-  stopWaveform(); // paused state by default
+  stopWaveform();
 }
 
 export function getAudioElement() {
